@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 	package br.com.alura.forum.modelo;
+=======
+package br.com.alura.forum.modelo;
+>>>>>>> develop
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
