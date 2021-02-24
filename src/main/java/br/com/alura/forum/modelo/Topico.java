@@ -29,6 +29,11 @@ public class Topico {
 	private Curso curso;
 	@OneToMany(mappedBy = "topico")
 	private List<Resposta> respostas = new ArrayList<>();
+	
+	@Deprecated
+	public Topico() { //se foi criado outro construtor, para a jpa é necessario ter o construtor default
+		
+	}
 
 	public Topico(String titulo, String mensagem, Curso curso) {
 		this.titulo = titulo;
