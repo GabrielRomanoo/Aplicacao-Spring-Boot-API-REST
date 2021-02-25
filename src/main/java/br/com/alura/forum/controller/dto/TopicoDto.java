@@ -1,4 +1,4 @@
-package br.com.alura.forum.dto;
+package br.com.alura.forum.controller.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import br.com.alura.forum.modelo.Topico;
 
-//classe apenas para representar o que quero devolver no JSON
+//classe apenas para representaro que devolvemos pro cliente por JSON
 public class TopicoDto {
 
 	private Long id;
