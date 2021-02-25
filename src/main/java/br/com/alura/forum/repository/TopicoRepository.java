@@ -11,7 +11,7 @@ import br.com.alura.forum.modelo.Topico;
 //como é interface, não precisa ter o @Repository
 public interface TopicoRepository extends JpaRepository<Topico, Long>{
 
-	List<Topico> findByCursoNome(String nomeCurso);	//para select em um atributo de um relacionamento da entidade
+	List<Topico> findByCurso_Nome(String nomeCurso);	//para select em um atributo de um relacionamento da entidade
 
 	//caso tivesse um atributo dentro de topico chamado curso nome, 
 	//seria preciso fazer uma distinção na consulta, para nao dar ambiguidade
