@@ -16,17 +16,21 @@ import br.com.alura.forum.repository.TopicoRepository;
 
 @RestController
 public class TopicosController {
-	
+
 	@Autowired
 	private TopicoRepository topicoRepository;
-	
+
 	@RequestMapping("/topicos")
 //	@ResponseBody //não precisa mais botar, o @RestController ja faz isso
-	public List<TopicoDto> lista() {
-		List<Topico> topicos = topicoRepository.findAll();
-		
-		return TopicoDto.converter(topicos);
-		// O Spring faz a conversão do objeto para JSON automaticamente, com o uso da biblioteca Jackson.
+	public List<TopicoDto> lista(String nomeCurso) {
+		if (nomeCurso == null) {
+			List<Topico> topicos = topicoRepository.findAll();
+			return TopicoDto.converter(topicos);
+			// O Spring faz a conversão do objeto para JSON automaticamente, com o uso da biblioteca Jackson.
+		} else {
+			List<Topico> topicos = topicoRepository.findByCursoNome(nomeCurso);
+			return TopicoDto.converter(topicos);
+		}
 	}
 
 }
