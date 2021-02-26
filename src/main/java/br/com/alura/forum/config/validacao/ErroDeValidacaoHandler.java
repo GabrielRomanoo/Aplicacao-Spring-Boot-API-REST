@@ -33,4 +33,7 @@ public class ErroDeValidacaoHandler {
 		return dto;
 	}
 	
+	/* esta classe funciona como uma espécie de interceptador, 
+	 * sempre que tiver um erro, o spring virá nela para ser tratadp */
+	
 }
