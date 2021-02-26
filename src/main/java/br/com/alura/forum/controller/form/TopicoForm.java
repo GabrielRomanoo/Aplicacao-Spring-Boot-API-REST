@@ -1,5 +1,10 @@
 package br.com.alura.forum.controller.form;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import br.com.alura.forum.modelo.Curso;
 import br.com.alura.forum.modelo.Topico;
 import br.com.alura.forum.repository.CursoRepository;
@@ -7,8 +12,11 @@ import br.com.alura.forum.repository.CursoRepository;
 //classe apenas para representar o que recebemos do cliente por JSON
 public class TopicoForm {
 
+	@NotNull @NotEmpty @Length(min = 5)
 	public String titulo;
+	@NotNull @NotEmpty @Length(min = 10)
 	public String mensagem;
+	@NotNull @NotEmpty 
 	public String nomeCurso;
 
 	public String getTitulo() {
