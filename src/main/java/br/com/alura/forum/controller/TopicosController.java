@@ -80,7 +80,7 @@ public class TopicosController {
 	
 	@DeleteMapping("/{id}")
 	@Transactional 
-	public ResponseEntity<?> deletar(@PathVariable Long id) {
+	public ResponseEntity<?> remover(@PathVariable Long id) {
 		topicoRepository.deleteById(id);
 		return ResponseEntity.ok().build(); //retorna 200 sem nada no body
 	}
