@@ -2,6 +2,7 @@ package br.com.alura.forum.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -63,26 +64,39 @@ public class TopicosController {
 	}
 	
 	@GetMapping("/{id}")
-	public DetalhesDoTopicoDto detalhar(@PathVariable Long id) { //como tem o mesmo nome, pode deixar id
-		//@PathVariable porque esta no /, e não no ?
-		Topico topico = topicoRepository.getOne(id);
-		DetalhesDoTopicoDto dto = new DetalhesDoTopicoDto(topico);
-		return dto;
+	public ResponseEntity<DetalhesDoTopicoDto> detalhar(@PathVariable Long id) { //como tem o mesmo nome, pode deixar id
+		//é @PathVariable porque esta no '/', e não no '?'
+		Optional<Topico> topico = topicoRepository.findById(id);
+		if (topico.isPresent()) {
+			DetalhesDoTopicoDto dto = new DetalhesDoTopicoDto(topico.get());
+			return ResponseEntity.ok(dto);
+		}
+	
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PutMapping("/{id}")
 	@Transactional //avisa pro spring que é pra commitar a transacao, Métodos anotados com @Transactional serão executados dentro de um contexto transacional, Ao finalizar o método, o Spring efetuará o commit automático da transação, caso nenhuma exception tenha sido lançada.
 	public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form) {
-		Topico topico = form.atualizar(id, topicoRepository);
-		TopicoDto dto = new TopicoDto(topico);
-		return ResponseEntity.ok(dto); //o ok retorna 200 com o dto no body da response
+		Optional<Topico> optional = topicoRepository.findById(id);
+		if (optional.isPresent()) {
+			Topico topico = form.atualizar(id, topicoRepository);
+			TopicoDto dto = new TopicoDto(topico);
+			return ResponseEntity.ok(dto); //o ok retorna 200 com o dto no body da response
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/{id}")
 	@Transactional 
 	public ResponseEntity<?> remover(@PathVariable Long id) {
-		topicoRepository.deleteById(id);
-		return ResponseEntity.ok().build(); //retorna 200 sem nada no body
+		Optional<Topico> optional = topicoRepository.findById(id);
+		if (optional.isPresent()) {
+			topicoRepository.deleteById(id);
+			return ResponseEntity.ok().build(); //retorna 200 sem nada no body
+		}
+		
+		return ResponseEntity.notFound().build();
 	}
 	
 }
