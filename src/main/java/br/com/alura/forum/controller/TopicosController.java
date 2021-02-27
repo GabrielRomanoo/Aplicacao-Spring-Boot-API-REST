@@ -35,7 +35,7 @@ public class TopicosController {
 
 	@GetMapping
 //	@ResponseBody //não precisa mais botar, o @RestController ja faz isso
-	public List<TopicoDto> lista(String nomeCurso) {
+	public List<TopicoDto> lista(String nomeCurso) { //o nome do curso vem como topicos?nomeCurso=...
 		if (nomeCurso == null) {
 			List<Topico> topicos = topicoRepository.findAll();
 			return TopicoDto.converter(topicos); 
