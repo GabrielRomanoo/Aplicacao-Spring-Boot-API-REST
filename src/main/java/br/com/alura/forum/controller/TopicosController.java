@@ -51,6 +51,7 @@ public class TopicosController {
 	}
 	
 	@PostMapping
+	@Transactional 
 	public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) { //o @RequestBody indica ao Spring que os parâmetros enviados no corpo da requisição devem ser atribuídos ao parâmetro do método
 		Topico topico = form.converter(cursoRepository);
 		topicoRepository.save(topico);
@@ -69,7 +70,7 @@ public class TopicosController {
 	}
 	
 	@PutMapping("/{id}")
-	@Transactional //avisa pro spring que é pra commitar a transacao
+	@Transactional //avisa pro spring que é pra commitar a transacao, Métodos anotados com @Transactional serão executados dentro de um contexto transacional, Ao finalizar o método, o Spring efetuará o commit automático da transação, caso nenhuma exception tenha sido lançada.
 	public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form) {
 		Topico topico = form.atualizar(id, topicoRepository);
 		TopicoDto dto = new TopicoDto(topico);
