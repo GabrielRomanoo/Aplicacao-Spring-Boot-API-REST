@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,9 +47,10 @@ public class TopicosController {
 //	@ResponseBody //não precisa mais botar, o @RestController ja faz isso
 	public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
 			@RequestParam(required = true) int pagina, 
-			@RequestParam(required = true) int quantidade) { //o nome do curso vem como topicos?nomeCurso=...
+			@RequestParam(required = true) int quantidade,
+			@RequestParam(required = true) String ordenacao) { //o nome do curso vem como topicos?nomeCurso=...
 
-		Pageable paginacao = PageRequest.of(pagina, quantidade);
+		Pageable paginacao = PageRequest.of(pagina, quantidade, Direction.DESC, ordenacao);
 		
 		if (nomeCurso == null) {
 			Page<Topico> topicos = topicoRepository.findAll(paginacao);
