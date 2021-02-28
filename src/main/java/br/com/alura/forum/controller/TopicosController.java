@@ -8,6 +8,11 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,16 +46,38 @@ public class TopicosController {
 
 	@GetMapping
 //	@ResponseBody //não precisa mais botar, o @RestController ja faz isso
-	public List<TopicoDto> lista(String nomeCurso) { //o nome do curso vem como topicos?nomeCurso=...
+	public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
+			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) { //o nome do curso vem como topicos?nomeCurso=...
+		///topicos?page=0&size=3&sort=dataCriacao,desc
+		
 		if (nomeCurso == null) {
-			List<Topico> topicos = topicoRepository.findAll();
+			Page<Topico> topicos = topicoRepository.findAll(paginacao);
 			return TopicoDto.converter(topicos); 
 			// O Spring faz a conversão do objeto para JSON automaticamente, com o uso da biblioteca Jackson.
 		} else {
-			List<Topico> topicos = topicoRepository.findByCurso_Nome(nomeCurso);
+			Page<Topico> topicos = topicoRepository.findByCurso_Nome(nomeCurso, paginacao);
 			return TopicoDto.converter(topicos);
 		}
 	}
+	
+//	@GetMapping
+////	@ResponseBody //não precisa mais botar, o @RestController ja faz isso
+//	public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
+//			@RequestParam(required = true) int pagina, 
+//			@RequestParam(required = true) int quantidade,
+//			@RequestParam(required = true) String ordenacao) { //o nome do curso vem como topicos?nomeCurso=...
+//
+//		Pageable paginacao = PageRequest.of(pagina, quantidade, Direction.DESC, ordenacao);
+//		
+//		if (nomeCurso == null) {
+//			Page<Topico> topicos = topicoRepository.findAll(paginacao);
+//			return TopicoDto.converter(topicos); 
+//			// O Spring faz a conversão do objeto para JSON automaticamente, com o uso da biblioteca Jackson.
+//		} else {
+//			Page<Topico> topicos = topicoRepository.findByCurso_Nome(nomeCurso, paginacao);
+//			return TopicoDto.converter(topicos);
+//		}
+//	}
 	
 	@PostMapping
 	@Transactional 
