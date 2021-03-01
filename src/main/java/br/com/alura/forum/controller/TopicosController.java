@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +47,7 @@ public class TopicosController {
 	private CursoRepository cursoRepository;
 
 	@GetMapping
-//	@ResponseBody //não precisa mais botar, o @RestController ja faz isso
+	@Cacheable(value = "listaDeTopicos")
 	public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
 			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) { //o nome do curso vem como topicos?nomeCurso=...
 		///topicos?page=0&size=3&sort=dataCriacao,desc
@@ -81,6 +83,7 @@ public class TopicosController {
 	
 	@PostMapping
 	@Transactional 
+	@CacheEvict(value = "listaDeTopicos", allEntries = true) // limpa o cahce, todos os registros
 	public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) { //o @RequestBody indica ao Spring que os parâmetros enviados no corpo da requisição devem ser atribuídos ao parâmetro do método
 		Topico topico = form.converter(cursoRepository);
 		topicoRepository.save(topico);
@@ -104,6 +107,7 @@ public class TopicosController {
 	
 	@PutMapping("/{id}")
 	@Transactional //avisa pro spring que é pra commitar a transacao, Métodos anotados com @Transactional serão executados dentro de um contexto transacional, Ao finalizar o método, o Spring efetuará o commit automático da transação, caso nenhuma exception tenha sido lançada.
+	@CacheEvict(value = "listaDeTopicos", allEntries = true)
 	public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form) {
 		Optional<Topico> optional = topicoRepository.findById(id);
 		if (optional.isPresent()) {
@@ -116,6 +120,7 @@ public class TopicosController {
 	
 	@DeleteMapping("/{id}")
 	@Transactional 
+	@CacheEvict(value = "listaDeTopicos", allEntries = true)
 	public ResponseEntity<?> remover(@PathVariable Long id) {
 		Optional<Topico> optional = topicoRepository.findById(id);
 		if (optional.isPresent()) {
