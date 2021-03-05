@@ -30,8 +30,7 @@ public class AutenticacaoController {
 
 	@PostMapping
 	public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form) {
-		// precisamos fazer a autenticacao na mao, porque estamos usando stateless, e
-		// nao mais session
+		// precisamos fazer a autenticacao na mao, porque estamos usando stateless, e nao mais session
 
 		UsernamePasswordAuthenticationToken dadosLogin = form.converte(); //transformamos os dados de login em um objeto
 
