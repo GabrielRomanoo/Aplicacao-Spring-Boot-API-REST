@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import br.com.alura.forum.repository.UsuarioRepository;
 
 @EnableWebSecurity
 @Configuration //o spring irá ler as configuracoes que estiverem dentro dessa classe
@@ -19,6 +22,12 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private AutenticacaoService autenticacaoService;
+	
+	@Autowired
+	private TokenService tokenservice;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	
 	@Override
 	@Bean //com o @Bean, o spring sabe que este metodo devolve o AuthenticationManager para ser usado na injecao de dependencias (duvida respondida aqui: https://cursos.alura.com.br/forum/topico-bean-145870#919742)
@@ -43,7 +52,10 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 			.anyRequest().authenticated() //qualquer outra requisicao(url) precisa estar autenticada
 		.and() //AUTENTICACAO MODO WEB TOKEN
 			.csrf().disable() //desabilitamos porque nossa aplicação ja esta livre do tipo de ataque csrf, porque estamos usando autenticacao via token
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //avisamos pro spring que quando fizer autenticacao, nao eh pra criar sessao, porque vamos usar token (autenticacao de maneira stateless)
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //avisamos pro spring que quando fizer autenticacao, nao eh pra criar sessao, porque vamos usar token (autenticacao de maneira stateless)
+		.and()
+			.addFilterBefore(new AutenticacaoViaTokenFilter(tokenservice, usuarioRepository), UsernamePasswordAuthenticationFilter.class); //adiciona o nosso filtro (interceptador) pra ser rodado antes do filtro de autenticacao do spring
+		
 		/* AUTENTICACAO MODO SESSION 
 		.and()
 			.formLogin(); //fala pro spring gerar um formulario de autenticacao e um controller que recebe as requisicoes desse formualario
