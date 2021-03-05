@@ -21,6 +21,9 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AutenticacaoService autenticacaoService;
 	
+	@Autowired
+	private TokenService tokenservice;
+	
 	@Override
 	@Bean //com o @Bean, o spring sabe que este metodo devolve o AuthenticationManager para ser usado na injecao de dependencias (duvida respondida aqui: https://cursos.alura.com.br/forum/topico-bean-145870#919742)
 	protected AuthenticationManager authenticationManager() throws Exception {
@@ -46,7 +49,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 			.csrf().disable() //desabilitamos porque nossa aplicação ja esta livre do tipo de ataque csrf, porque estamos usando autenticacao via token
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //avisamos pro spring que quando fizer autenticacao, nao eh pra criar sessao, porque vamos usar token (autenticacao de maneira stateless)
 		.and()
-			.addFilterBefore(new AutenticacaoViaTokenFilter(), UsernamePasswordAuthenticationFilter.class); //adiciona o nosso filtro (interceptador) pra ser rodado antes do filtro de autenticacao do spring
+			.addFilterBefore(new AutenticacaoViaTokenFilter(tokenservice), UsernamePasswordAuthenticationFilter.class); //adiciona o nosso filtro (interceptador) pra ser rodado antes do filtro de autenticacao do spring
 		
 		/* AUTENTICACAO MODO SESSION 
 		.and()
