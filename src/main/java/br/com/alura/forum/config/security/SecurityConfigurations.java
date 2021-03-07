@@ -43,7 +43,6 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	}		
 	
 	//Configuracoes de Autorizacao
-	//olaola
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
