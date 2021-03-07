@@ -59,6 +59,8 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter { //OncePer
 		//forçando a autenticacao do usuario
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		//usamos o SecurityContextHolder ao inves da AuthenticationManager para autenticar pq a classe AuthenticationManager dispara o processo de autenticação via username/password, e nao via token
 	}
 
 	private String recuperarToken(HttpServletRequest request) {
