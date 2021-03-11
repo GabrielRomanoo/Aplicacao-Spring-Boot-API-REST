@@ -118,6 +118,7 @@ public class TopicosController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	//o spring verifica se a role do usuario é MODERADOR, se nao for, ele nem entra no remover
 	@DeleteMapping("/{id}")
 	@Transactional 
 	@CacheEvict(value = "listaDeTopicos", allEntries = true)
