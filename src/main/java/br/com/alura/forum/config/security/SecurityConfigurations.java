@@ -50,6 +50,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.GET, "/topicos/*").permitAll() //detalhar topicos
 			.antMatchers(HttpMethod.POST, "/auth").permitAll() //autenticacao usuario
 			.antMatchers(HttpMethod.GET, "/actuator/**").permitAll() //quando for para producao, precisaria tirar esse permitAll, pois iria expor dados sensiveis da aplicacao
+			.antMatchers(HttpMethod.DELETE, "/topicos/*").hasRole("MODERADOR") //permite apenas para perfil de moderador (o spring ja coloca o prefixo ROLE_ automaticamente)
 			.anyRequest().authenticated() //qualquer outra requisicao(url) precisa estar autenticada
 		.and() //AUTENTICACAO MODO WEB TOKEN
 			.csrf().disable() //desabilitamos porque nossa aplicação ja esta livre do tipo de ataque csrf, porque estamos usando autenticacao via token
