@@ -2,8 +2,8 @@ package br.com.alura.forum.controller;
 
 import javax.validation.Valid;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +20,7 @@ import br.com.alura.forum.controller.form.LoginForm;
 
 @RestController
 @RequestMapping("/auth")
+@Profile("prod") //A anotação @Profile(“prod”) indica ao Spring que determinada classe deve apenas ser carregada se o profile ativo for prod.
 public class AutenticacaoController {
 
 	@Autowired // o spring nao faz a injecao de dependencias desta classe automaticamente, foi preciso configurar o @Bean dela no SecurityConfigurations
