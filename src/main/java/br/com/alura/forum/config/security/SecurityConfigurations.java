@@ -19,7 +19,7 @@ import br.com.alura.forum.repository.UsuarioRepository;
 
 @EnableWebSecurity
 @Configuration //o spring irá ler as configuracoes que estiverem dentro dessa classe
-@Profile("prod")
+@Profile(value = {"prod","test"})
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter { 
 	
 	@Autowired

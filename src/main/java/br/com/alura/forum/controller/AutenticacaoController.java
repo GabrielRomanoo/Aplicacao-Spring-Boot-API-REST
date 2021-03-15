@@ -20,7 +20,7 @@ import br.com.alura.forum.controller.form.LoginForm;
 
 @RestController
 @RequestMapping("/auth")
-@Profile("prod") //A anotação @Profile(“prod”) indica ao Spring que determinada classe deve apenas ser carregada se o profile ativo for prod.
+@Profile(value = {"prod","test"}) //A anotação @Profile(“prod”) indica ao Spring que determinada classe deve apenas ser carregada se o profile ativo for prod.
 public class AutenticacaoController {
 
 	@Autowired // o spring nao faz a injecao de dependencias desta classe automaticamente, foi preciso configurar o @Bean dela no SecurityConfigurations
