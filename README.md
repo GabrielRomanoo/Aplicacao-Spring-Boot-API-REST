@@ -12,3 +12,6 @@ Esta aplicação possui os seguintes recursos:
 - Autenticação via token JWT
 - Monitoração dos endpoints com Spring Boot Actuator e Admin no repositório [`Monitoramento Spring Boot`](https://github.com/GabrielRomanoo/Monitoramento-Spring-Boot)
 - Documentação da API com Swagger
+- Proteção da API com endpoints baseados em perfil de usuário
+- Separação de configurações em Profiles
+- Testes automatizados de componentes do Spring Boot
